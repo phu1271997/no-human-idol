@@ -4,6 +4,12 @@ NoHumanIdol is a decentralized creative contest platform built on **GenLayer**, 
 
 Contestants submit a URL to their work (meme, art, article, song, story) alongside a title. The contract itself fetches the submission content, evaluates it against the official contest criteria, and issues a score from 0 to 100 — completely removing human bias. The entrant with the highest score wins the entire accumulated prize pool.
 
+## 🔗 Live Links
+
+- **Live Production App (Vercel)**: [no-human-idol.vercel.app](https://no-human-idol.vercel.app)
+- **GitHub Repository (Public)**: [phu1271997/no-human-idol](https://github.com/phu1271997/no-human-idol)
+- **Deployed GenLayer Smart Contract Address**: `0x3E24E6c4db7B8C0f08392194515A1e4EAe656D68`
+
 ---
 
 ## 🚀 Key Features

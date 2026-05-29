@@ -313,7 +313,7 @@ export default function App() {
       let score = 0
       let reason = ""
 
-      // Intelligent scoring logic simulating LLM behavior (with prompt injection defense)
+      // Scoring logic simulating LLM behavior (with prompt injection defense)
       if (item.url.includes("exploit") || item.title.toLowerCase().includes("injection") || item.url.includes("README.md")) {
         score = 0
         reason = "SECURITY ALERT: Prompt injection attempt detected ('ignore judging criteria'). Entry penalized to 0."
@@ -324,7 +324,6 @@ export default function App() {
         score = 78
         reason = "Aesthetically pleasing artwork, but slightly lacking in relevance to the primary GenLayer theme."
       } else {
-        // Random good creative score
         score = Math.floor(Math.random() * 41) + 55 // 55 to 95
         reason = `Creative submission evaluated successfully. High alignment with the rubric criteria.`
       }
@@ -404,80 +403,77 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen p-6 md:p-12 flex flex-col justify-between">
+    <div className="app-wrapper">
       {/* Header section */}
-      <header className="max-w-6xl mx-auto w-full mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <Trophy className="text-white w-6 h-6 animate-pulse" />
+      <header className="app-header">
+        <div className="logo-section">
+          <div className="logo-badge">
+            <Trophy />
           </div>
-          <div>
-            <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              NoHumanIdol <span className="text-xs px-2 py-0.5 rounded-full bg-violet-600/30 text-violet-300 border border-violet-500/20">GenLayer App</span>
+          <div className="logo-title-group">
+            <h1>
+              NoHumanIdol <span className="version-pill">GenLayer App</span>
             </h1>
-            <p className="text-sm text-slate-400">Cosmic-scale creative contests judged solely by consensus AI</p>
+            <p className="logo-subtitle">Cosmic-scale creative contests judged solely by consensus AI</p>
           </div>
         </div>
 
         {/* Live / Sandbox Mode Toggle */}
-        <div className="glass-panel p-1.5 flex gap-2 rounded-xl">
+        <div className="mode-toggle">
           <button 
             onClick={() => setIsLiveMode(false)}
-            className={`px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all ${!isLiveMode ? 'bg-violet-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`toggle-btn ${!isLiveMode ? 'active-sim' : ''}`}
           >
-            <Terminal className="w-4 h-4" />
+            <Terminal style={{ width: '16px', height: '16px' }} />
             Sandbox Simulator
           </button>
           <button 
             onClick={() => setIsLiveMode(true)}
-            className={`px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all ${isLiveMode ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`toggle-btn ${isLiveMode ? 'active-live' : ''}`}
           >
-            <Database className="w-4 h-4" />
+            <Database style={{ width: '16px', height: '16px' }} />
             Live Network
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto w-full flex-grow">
+      <main style={{ flexGrow: 1 }}>
         {/* Alerts and notifications */}
         {errorMsg && (
-          <div className="mb-8 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-start gap-3">
-            <ShieldAlert className="w-5 h-5 flex-shrink-0 text-rose-400" />
+          <div className="alert-box alert-error">
+            <ShieldAlert style={{ width: '20px', height: '20px', flexShrink: 0 }} />
             <span>{errorMsg}</span>
           </div>
         )}
         {successMsg && (
-          <div className="mb-8 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-start gap-3">
-            <CheckCircle className="w-5 h-5 flex-shrink-0 text-emerald-400 animate-bounce" />
+          <div className="alert-box alert-success">
+            <CheckCircle style={{ width: '20px', height: '20px', flexShrink: 0 }} />
             <span>{successMsg}</span>
           </div>
         )}
 
         {/* Hero Contest Title Card */}
-        <section className="glass-panel p-8 mb-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-violet-600/10 to-cyan-500/0 rounded-full blur-3xl pointer-events-none"></div>
-          
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-            <div>
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-1.5 mb-2">
-                <Sparkles className="w-3.5 h-3.5 animate-spin" /> Active Intelligent Contest
-              </span>
-              <h2 className="text-3xl font-extrabold text-white mb-3 tracking-tight">{current.title}</h2>
-              <p className="text-slate-400 max-w-3xl leading-relaxed text-sm bg-black/20 p-4 rounded-xl border border-white/5">
-                <strong className="text-violet-300">Judging Rubric:</strong> {current.criteria}
-              </p>
+        <section className="hero-banner">
+          <div>
+            <span className="hero-tag">
+              <Sparkles style={{ width: '14px', height: '14px' }} /> Active Intelligent Contest
+            </span>
+            <h2 className="hero-title">{current.title}</h2>
+            <div className="hero-criteria-box">
+              <strong>Judging Rubric:</strong>
+              <p>{current.criteria}</p>
             </div>
+          </div>
 
-            {/* Prize pool status */}
-            <div className="flex flex-col items-end justify-center bg-white/5 p-6 rounded-2xl border border-white/5 text-right min-w-[200px]">
-              <div className="flex items-center gap-1.5 text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">
-                <Coins className="w-4 h-4 text-yellow-500" /> Prize Pool
-              </div>
-              <div className="text-3xl font-black text-white flex items-baseline gap-1">
-                <span className="text-yellow-400">{current.balance.toFixed(2)}</span>
-                <span className="text-xs font-normal text-slate-400">GEN</span>
-              </div>
+          {/* Prize pool status */}
+          <div className="prize-badge">
+            <div className="prize-label">
+              <Coins style={{ width: '16px', height: '16px', color: 'var(--color-gold)' }} /> Prize Pool
+            </div>
+            <div className="prize-value">
+              {current.balance.toFixed(2)}
+              <span className="prize-currency">GEN</span>
             </div>
           </div>
         </section>
@@ -485,49 +481,49 @@ export default function App() {
         {/* Dashboard Grid */}
         <div className="dashboard-grid">
           {/* Left Column: Form submissions and participants */}
-          <div className="flex flex-col gap-8">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             
             {/* Submit Form */}
-            <section className="glass-panel p-8">
-              <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <Send className="w-5 h-5 text-violet-400" /> Submit Your Work
+            <section className="panel-card">
+              <h3 className="card-title">
+                <Send style={{ width: '20px', height: '20px', color: 'var(--color-violet)' }} /> Submit Your Work
               </h3>
               
-              <form onSubmit={handleSubmission} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Submission Title</label>
+              <form onSubmit={handleSubmission} className="form-layout">
+                <div className="form-group">
+                  <label className="form-label">Submission Title</label>
                   <input 
                     type="text" 
                     placeholder="e.g. My Revolutionary GenLayer Meme"
                     value={submitTitle}
                     onChange={e => setSubmitTitle(e.target.value)}
                     disabled={!current.submissionsOpen}
-                    className="glass-input"
+                    className="form-input"
                     required
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Public Resource URL (Creative link)</label>
+                <div className="form-group">
+                  <label className="form-label">Public Resource URL (Creative link)</label>
                   <input 
                     type="url" 
                     placeholder="https://example.com/my-work.jpg"
                     value={submitUrl}
                     onChange={e => setSubmitUrl(e.target.value)}
                     disabled={!current.submissionsOpen}
-                    className="glass-input"
+                    className="form-input"
                     required
                   />
                 </div>
 
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-xs text-slate-500 flex items-center gap-1">
-                    <HelpCircle className="w-3.5 h-3.5" /> URLs will be scraped & verified by consensus AI.
+                <div className="form-footer">
+                  <span className="form-help">
+                    <HelpCircle style={{ width: '14px', height: '14px' }} /> URLs will be scraped & verified by consensus AI.
                   </span>
                   
                   <button 
                     type="submit" 
                     disabled={!current.submissionsOpen}
-                    className="btn-primary"
+                    className="btn btn-primary"
                   >
                     Submit Entry
                   </button>
@@ -536,95 +532,89 @@ export default function App() {
             </section>
 
             {/* Entrants and AI Scores Table */}
-            <section className="glass-panel p-8 overflow-hidden">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Users className="w-5 h-5 text-cyan-400" /> Contestants & Live AI Scores ({current.entrants.length})
+            <section className="panel-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+                <h3 className="card-title" style={{ marginBottom: 0 }}>
+                  <Users style={{ width: '20px', height: '20px', color: 'var(--color-cyan)' }} /> Contestants & Live AI Scores ({current.entrants.length})
                 </h3>
                 {isLiveMode && (
                   <button 
                     onClick={fetchLiveState} 
                     disabled={isLoading}
-                    className="btn-secondary py-2 px-3 rounded-lg flex items-center gap-1.5 text-xs"
+                    className="btn btn-secondary btn-small"
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                   >
-                    <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'spinner' : ''}`} />
+                    <RefreshCw className={isLoading ? 'spinner' : ''} style={{ width: '14px', height: '14px' }} />
                     Refresh
                   </button>
                 )}
               </div>
 
               {current.entrants.length === 0 ? (
-                <div className="p-8 text-center bg-black/10 rounded-xl border border-white/5">
-                  <Users className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                  <p className="text-sm text-slate-500">No submissions received yet. Be the first to enter!</p>
+                <div className="empty-state">
+                  <Users className="empty-icon" />
+                  <p className="empty-text">No submissions received yet. Be the first to enter!</p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-4">
-                  {current.entrants.map((addr, idx) => {
+                <div className="contestant-container">
+                  {current.entrants.map((addr) => {
                     const detail = current.entryDetails[addr] || { title: "Fetching...", url: "", score: 0, reason: "" }
                     const isWinner = current.hasJudged && current.winner === addr
                     
                     return (
                       <div 
                         key={addr} 
-                        className={`p-5 rounded-xl border relative transition-all ${
-                          isWinner 
-                            ? 'bg-amber-500/5 border-amber-500/30 shadow-lg shadow-amber-500/5' 
-                            : detail.score === 0 && current.hasJudged
-                              ? 'bg-rose-500/5 border-rose-500/20'
-                              : 'bg-white/[0.02] border-white/5 hover:border-white/10'
-                        }`}
+                        className={`entrant-card ${isWinner ? 'is-winner' : ''} ${detail.score === 0 && current.hasJudged ? 'is-flagged' : ''}`}
                       >
                         {/* Entry loading shimmer */}
                         {detail.loading && (
-                          <div className="absolute inset-0 bg-black/40 rounded-xl flex items-center justify-center backdrop-blur-sm z-10">
-                            <div className="flex items-center gap-2 text-violet-400 text-sm font-semibold">
-                              <Cpu className="w-5 h-5 spinner" /> AI Jury crawling site & evaluating score...
-                            </div>
+                          <div className="entrant-loading-overlay">
+                            <Cpu className="spinner" style={{ width: '20px', height: '20px' }} /> 
+                            AI Jury crawling site & evaluating score...
                           </div>
                         )}
 
-                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                          <div>
-                            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                              <h4 className="font-bold text-white text-base">{detail.title}</h4>
+                        <div className="entrant-header">
+                          <div className="entrant-info">
+                            <h4>
+                              {detail.title}
                               {isWinner && (
-                                <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-xs font-extrabold uppercase border border-amber-500/30 flex items-center gap-1">
-                                  <Trophy className="w-3 h-3" /> Winner
+                                <span className="status-badge badge-winner">
+                                  Winner
                                 </span>
                               )}
                               {detail.score === 0 && current.hasJudged && (
-                                <span className="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 text-xs font-bold uppercase border border-rose-500/30">
+                                <span className="status-badge badge-flagged">
                                   Flagged
                                 </span>
                               )}
-                            </div>
+                            </h4>
                             
-                            <p className="text-xs text-slate-500 font-mono mb-2 flex items-center gap-1">
-                              Entrant: <span className="text-slate-400">{addr.substring(0, 10)}...{addr.substring(addr.length - 8)}</span>
+                            <p className="entrant-addr">
+                              Entrant: <span>{addr.substring(0, 10)}...{addr.substring(addr.length - 8)}</span>
                             </p>
 
                             <a 
                               href={detail.url} 
                               target="_blank" 
                               rel="noreferrer" 
-                              className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 w-fit"
+                              className="entrant-url"
                             >
-                              View Submission URL <ExternalLink className="w-3 h-3" />
+                              View Submission URL <ExternalLink style={{ width: '12px', height: '12px' }} />
                             </a>
                           </div>
 
                           {/* Score metrics */}
-                          <div className="flex flex-col items-end justify-center min-w-[80px]">
-                            <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Score</span>
-                            <div className={`text-2xl font-black ${
+                          <div className="entrant-score-box">
+                            <span className="entrant-score-label">Score</span>
+                            <div className={`entrant-score-value ${
                               !current.hasJudged 
-                                ? 'text-slate-600' 
+                                ? 'not-judged' 
                                 : detail.score >= 80 
-                                  ? 'text-emerald-400' 
+                                  ? 'excellent' 
                                   : detail.score >= 50 
-                                    ? 'text-yellow-400' 
-                                    : 'text-rose-400'
+                                    ? 'average' 
+                                    : 'low'
                             }`}>
                               {current.hasJudged ? detail.score : "—"}
                             </div>
@@ -633,10 +623,10 @@ export default function App() {
 
                         {/* AI explanation reason block */}
                         {current.hasJudged && detail.reason && (
-                          <div className="mt-4 pt-3 border-t border-white/5 text-xs text-slate-400 leading-relaxed flex items-start gap-2 bg-black/10 p-3 rounded-lg">
-                            <Cpu className="w-4 h-4 text-violet-400 flex-shrink-0 mt-0.5" />
+                          <div className="entrant-verdict">
+                            <Cpu />
                             <div>
-                              <strong className="text-violet-300 font-semibold">AI Jury verdict:</strong> {detail.reason}
+                              <span className="verdict-label">AI Jury verdict:</span> {detail.reason}
                             </div>
                           </div>
                         )}
@@ -649,51 +639,51 @@ export default function App() {
           </div>
 
           {/* Right Column: Organizer Actions & System specs */}
-          <div className="flex flex-col gap-8">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             
             {/* Live Contract Details panel */}
-            <section className="glass-panel p-8">
-              <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <Database className="w-5 h-5 text-cyan-400" /> Contract Infrastructure
+            <section className="panel-card">
+              <h3 className="card-title">
+                <Database style={{ width: '20px', height: '20px', color: 'var(--color-cyan)' }} /> Contract Infrastructure
               </h3>
               
-              <div className="flex flex-col gap-4 text-sm">
-                <div className="p-3 bg-black/20 rounded-xl border border-white/5">
-                  <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Contest Contract Address</div>
-                  <div className="font-mono text-xs text-violet-300 select-all break-all">{CONTRACT_ADDRESS}</div>
+              <div className="details-list">
+                <div className="details-block">
+                  <div className="details-block-label">Contest Contract Address</div>
+                  <div className="details-block-val">{CONTRACT_ADDRESS}</div>
                 </div>
 
-                <div className="p-3 bg-black/20 rounded-xl border border-white/5">
-                  <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">GenLayer RPC Node Endpoint</div>
-                  <div className="font-mono text-xs text-slate-400 break-all">{RPC_URL}</div>
+                <div className="details-block">
+                  <div className="details-block-label">GenLayer RPC Node Endpoint</div>
+                  <div className="details-block-val">{RPC_URL}</div>
                 </div>
 
-                <div className="flex justify-between items-center py-2 border-b border-white/5">
-                  <span className="text-slate-400 text-xs">Target API Version</span>
-                  <span className="font-mono font-bold text-xs text-white">v0.2.16</span>
+                <div className="details-item">
+                  <span className="details-label">Target API Version</span>
+                  <span className="details-val">v0.2.16</span>
                 </div>
 
-                <div className="flex justify-between items-center py-2 border-b border-white/5">
-                  <span className="text-slate-400 text-xs">Submissions Status</span>
-                  <span className="flex items-center gap-1.5 font-bold text-xs">
+                <div className="details-item">
+                  <span className="details-label">Submissions Status</span>
+                  <span className="details-val">
                     {current.submissionsOpen ? (
-                      <span className="text-emerald-400 flex items-center gap-1"><Unlock className="w-3.5 h-3.5" /> OPEN</span>
+                      <span className="status-badge badge-open">OPEN</span>
                     ) : (
-                      <span className="text-rose-400 flex items-center gap-1"><Lock className="w-3.5 h-3.5" /> CLOSED</span>
+                      <span className="status-badge badge-closed">CLOSED</span>
                     )}
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center py-2 border-b border-white/5">
-                  <span className="text-slate-400 text-xs">Judging State</span>
-                  <span className="font-bold text-xs text-white">
-                    {current.hasJudged ? "JUDGED & PAYOUT EMITTED" : "AWAITING JURY CONSENSUS"}
+                <div className="details-item">
+                  <span className="details-label">Judging State</span>
+                  <span className="details-val" style={{ fontSize: '0.75rem' }}>
+                    {current.hasJudged ? "COMPLETED" : "AWAITING JURY"}
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-slate-400 text-xs">Organizer</span>
-                  <span className="font-mono text-xs text-slate-400">
+                <div className="details-item">
+                  <span className="details-label">Organizer</span>
+                  <span className="details-val mono">
                     {current.organizer.substring(0, 8)}...{current.organizer.substring(current.organizer.length - 6)}
                   </span>
                 </div>
@@ -701,66 +691,69 @@ export default function App() {
             </section>
 
             {/* Fund Contest Card */}
-            <section className="glass-panel p-8">
-              <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <Coins className="w-5 h-5 text-yellow-500" /> Sponsor Prize Pool
+            <section className="panel-card">
+              <h3 className="card-title">
+                <Coins style={{ width: '20px', height: '20px', color: 'var(--color-gold)' }} /> Sponsor Prize Pool
               </h3>
               
-              <form onSubmit={handleFunding} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Deposit Amount (GEN)</label>
-                  <div className="relative">
+              <form onSubmit={handleFunding} className="form-layout">
+                <div className="form-group">
+                  <label className="form-label">Deposit Amount (GEN)</label>
+                  <div style={{ position: 'relative' }}>
                     <input 
                       type="number" 
                       step="0.01"
                       placeholder="e.g. 1.5"
                       value={fundingAmount}
                       onChange={e => setFundingAmount(e.target.value)}
-                      className="glass-input w-full pr-12"
+                      className="form-input"
+                      style={{ width: '100%', paddingRight: '56px' }}
                       required
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500">GEN</span>
+                    <span style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)' }}>GEN</span>
                   </div>
                 </div>
 
-                <button type="submit" className="btn-secondary w-full">
+                <button type="submit" className="btn btn-secondary btn-full">
                   Deposit GEN Tokens
                 </button>
               </form>
             </section>
 
             {/* Organizer Controls */}
-            <section className="glass-panel p-8 relative overflow-hidden border-violet-500/20">
-              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-violet-600 to-cyan-500"></div>
-              
-              <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-violet-400" /> Organizer Dashboard
+            <section className="panel-card panel-card-accent">
+              <h3 className="card-title">
+                <Cpu style={{ width: '20px', height: '20px', color: 'var(--color-violet)' }} /> Organizer Dashboard
               </h3>
-              <p className="text-xs text-slate-400 mb-6">Manage submissions, trigger subjective crawls, and dispatch contract values.</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '20px', lineHeight: 1.4 }}>
+                Manage submissions, trigger subjective crawls, and dispatch contract values.
+              </p>
               
-              <div className="flex flex-col gap-4">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <button 
                   onClick={handleCloseSubmissions} 
                   disabled={!current.submissionsOpen}
-                  className="btn-secondary w-full flex items-center justify-center gap-2"
+                  className="btn btn-secondary btn-full"
+                  style={{ display: 'flex', justifySelf: 'center', gap: '8px' }}
                 >
-                  <Lock className="w-4 h-4 text-rose-400" />
+                  <Lock style={{ width: '16px', height: '16px', color: 'var(--color-rose)' }} />
                   Close Submissions
                 </button>
 
                 <button 
                   onClick={handleRunJudgingSimulated} 
                   disabled={current.submissionsOpen || current.hasJudged || isLoading}
-                  className="btn-primary w-full flex items-center justify-center gap-2"
+                  className="btn btn-primary btn-full"
+                  style={{ display: 'flex', justifySelf: 'center', gap: '8px' }}
                 >
-                  <Cpu className={`w-4 h-4 ${isLoading ? 'spinner' : ''}`} />
+                  <Cpu className={isLoading ? 'spinner' : ''} style={{ width: '16px', height: '16px' }} />
                   Run AI Judging
                 </button>
 
                 {!isLiveMode && (
                   <button 
                     onClick={handleResetSimulator}
-                    className="btn-secondary w-full border-white/5 hover:border-rose-500/20 hover:text-rose-400"
+                    className="btn btn-danger btn-full"
                   >
                     Reset Sandbox State
                   </button>
@@ -772,11 +765,11 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="max-w-6xl mx-auto w-full mt-16 pt-6 border-t border-white/5 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <footer className="app-footer">
         <p>© 2026 NoHumanIdol. Deployed autonomously under GenLayer Intelligent Contract Protocol.</p>
-        <div className="flex gap-4">
-          <a href="https://docs.genlayer.com" target="_blank" rel="noreferrer" className="hover:text-slate-300">GenLayer Docs</a>
-          <a href="https://studio.genlayer.com" target="_blank" rel="noreferrer" className="hover:text-slate-300">GenLayer Studio</a>
+        <div className="footer-links">
+          <a href="https://docs.genlayer.com" target="_blank" rel="noreferrer">GenLayer Docs</a>
+          <a href="https://studio.genlayer.com" target="_blank" rel="noreferrer">GenLayer Studio</a>
         </div>
       </footer>
     </div>
